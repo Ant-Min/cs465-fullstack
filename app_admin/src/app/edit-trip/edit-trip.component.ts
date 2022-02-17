@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
 import { TripDataService } from '../services/trip-data.service';
 
 @Component({
@@ -10,9 +10,10 @@ import { TripDataService } from '../services/trip-data.service';
 })
 
 export class EditTripComponent implements OnInit {
+
   editForm: FormGroup;
   submitted = false;
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -27,9 +28,9 @@ export class EditTripComponent implements OnInit {
       this.router.navigate(['']);
       return;
     }
-    
+
     console.log('EditTripComponent#onInit found tripCode ' + tripCode);
-    
+
     // initialize form
     this.editForm = this.formBuilder.group({
       _id: [],
@@ -42,27 +43,23 @@ export class EditTripComponent implements OnInit {
       image: ['', Validators.required],
       description: ['', Validators.required],
     })
-
-    console.log('EditTripComponent#onInit calling   TripDataService#getTrip(\'' + tripCode + '\')');
-    
+    console.log('EditTripComponent#onInit calling TripDataService#getTrip(\'' + tripCode + '\')');
     this.tripService.getTrip(tripCode)
       .then(data => {
         console.log(data);
         // Don't use editForm.setValue() as it will throw console error
         this.editForm.patchValue(data[0]);
-      })
-   }
-   
-   onSubmit() {
-     this.submitted = true;
-     if (this.editForm.valid) {
-       this.tripService.updateTrip(this.editForm.value)
-       .then(data => {
-         console.log(data);
-         this.router.navigate(['']);
-        });
-      }
-    }
-   
+    })
+  }
 
+   onSubmit() {
+    this.submitted = true;
+    if (this.editForm.valid) {
+      this.tripService.updateTrip(this.editForm.value)
+        .then(data => {
+          console.log(data);
+          this.router.navigate(['']);
+      });
+    }
+  }
 }
